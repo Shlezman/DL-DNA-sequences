@@ -1,0 +1,12 @@
+.idea/
+.venv/
+./k-mers/
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints
+.vscode/
+*.keras/
+*.npy
+test_neandarthal/
+**.keras
