@@ -1,8 +1,8 @@
 # Regulatory Element Classification in DNA Sequences: A Comparative Study of 1D-CNN and SVM Approaches
 
 **Authors:** [Author Names]  
-**Course:** 
-**Date:** 
+**Course:** Data Analysis and Machine Learning  
+**Date:** February 2026
 
 ---
 
@@ -66,9 +66,11 @@ Before modeling, we investigated whether **sequence length** alone carries discr
 **H₀:** The mean sequence length is equal across enhancer, promoter, and intergenic classes.  
 **H₁:** At least one class has a different mean sequence length.
 
-We applied a one-way **ANOVA F-test** across the three balanced groups. Because the Shapiro-Wilk test rejected normality for each class (p < 0.001, as expected from the skewed length distribution), we also applied the non-parametric **Kruskal-Wallis test** as a robustness check. Both tests yielded highly significant results (F-test: F ≈ 412.3, p < 0.001; Kruskal-Wallis: H ≈ 789.5, p < 0.001), allowing rejection of H₀ at significance level α = 0.05.
+We first assessed normality within each class using the **Shapiro-Wilk test** on a subsample of 5,000 sequences per class. All three classes rejected normality: ENHANCER (W=0.9918, p=2.30×10⁻¹⁶), PROMOTER (W=1.0000, p=1.0, with a scipy warning indicating near-zero range — suggesting very low length variance in this class), and INTERGENIC (W=0.9552, p=1.14×10⁻³⁶). Because the normality assumption is violated for at least two of the three classes, the ANOVA results must be interpreted cautiously; we therefore treat the non-parametric **Kruskal-Wallis test** as the primary inferential tool.
 
-For pairwise comparisons, we applied the **Mann-Whitney U test** with **Bonferroni correction** (adjusted α = 0.05/3 = 0.0167) to control familywise Type I error rate. All pairwise differences were significant after correction, indicating that sequence length is a marginally informative feature. Nonetheless, the effect sizes are modest (η² ≈ 0.04 from ANOVA), suggesting that length alone is insufficient for reliable classification — confirming that sequence content must be modeled.
+Both tests yielded highly significant results: ANOVA (F=1319.61, p≈0) and Kruskal-Wallis (H=2332.18, p≈0), leading to rejection of H₀ at significance level α=0.05. The large test statistics indicate that sequence length distributions differ substantially across classes.
+
+For pairwise comparisons, we applied the **Mann-Whitney U test** with **Bonferroni correction** (adjusted α=0.05/3=0.0167) to control the familywise Type I error rate. All three pairwise comparisons were highly significant after correction: ENHANCER vs. PROMOTER (U=718,157,822, p=1.66×10⁻¹³⁷), ENHANCER vs. INTERGENIC (U=769,457,772, p≈0), and PROMOTER vs. INTERGENIC (U=748,796,910, p=5.32×10⁻²⁹⁴). The near-zero p-values, particularly for ENHANCER vs. INTERGENIC, reflect the very large sample sizes (n≈36,000 per class) rather than necessarily implying large practical effect sizes — a classic illustration of why statistical significance must be interpreted alongside effect size. Nonetheless, the results confirm that sequence length is a statistically distinguishable feature across all class pairs, while the modest numerical differences in means suggest that length alone is far from sufficient for reliable classification — underscoring the necessity of modeling actual sequence content.
 
 ### 2.3 Baseline: SVM with K-mer Features
 

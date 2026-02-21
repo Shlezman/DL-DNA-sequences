@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_parquet("/tf/unified_DNA_dataset/DNA_multiclass.parquet")
+df = pd.read_parquet("../DNA_dataset/DNA_multiclass.parquet")
 
 print("Sequence length statistics:")
 print(df["sequence"].str.len().describe())
@@ -21,3 +21,5 @@ for label in df["label"].unique():
 df_balanced = pd.concat(sampled_groups, ignore_index=True)
 df_balanced = df_balanced.sample(
     frac=1, random_state=42).reset_index(drop=True)  # shuffle
+
+df_balanced.to_parquet('../DNA_dataset/DNA_multiclass_balanced.parquet')

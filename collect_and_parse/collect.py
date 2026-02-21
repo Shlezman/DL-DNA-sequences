@@ -155,7 +155,7 @@ for label_name in ["ENHANCER", "PROMOTER", "INTERGENIC"]:
         print(f"    Count: {len(lens)}")
         print(f"    Min: {min(lens)}, Max: {max(lens)}, Mean: {sum(lens)/len(lens):.1f}")
 
-output_dir = Path("/tf/unified_DNA_dataset")
+output_dir = Path("../DNA_dataset")
 output_dir.mkdir(exist_ok=True)
 
 parquet_path = output_dir / "DNA_multiclass.parquet"
