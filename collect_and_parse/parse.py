@@ -1,25 +1,23 @@
 import pandas as pd
 
-df = pd.read_parquet("../unified_DNA_dataset/DNA_multiclass.parquet")
+df = pd.read_parquet("/tf/unified_DNA_dataset/DNA_multiclass.parquet")
 
-print("Original label distribution:")
+print("Sequence length statistics:")
+print(df["sequence"].str.len().describe())
+
+print("\nOriginal label distribution:")
 print(df["label"].value_counts())
 
 min_count = df["label"].value_counts().min()
 print(f"\nDownsampling all classes to {min_count} samples")
 
-df_balanced = (
-    df.groupby("label", group_keys=False)
-      .apply(lambda x: x.sample(n=min_count, random_state=42))
-      .sample(frac=1, random_state=42)  # shuffle
-      .reset_index(drop=True)
-)
+# Sample from each group separately then concatenate
+sampled_groups = []
+for label in df["label"].unique():
+    group = df[df["label"] == label]
+    sampled = group.sample(n=min_count, random_state=42)
+    sampled_groups.append(sampled)
 
-print("\nBalanced label distribution:")
-print(df_balanced["label"].value_counts())
-
-
-output_path = "../unified_DNA_dataset/DNA_multiclass_balanced.parquet"
-df_balanced.to_parquet(output_path, index=False)
-
-print(f"\nBalanced dataset saved to: {output_path}")
+df_balanced = pd.concat(sampled_groups, ignore_index=True)
+df_balanced = df_balanced.sample(
+    frac=1, random_state=42).reset_index(drop=True)  # shuffle
