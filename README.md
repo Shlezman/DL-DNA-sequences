@@ -1,7 +1,7 @@
 # Sequence-Based Classification of Regulatory DNA Elements: A Comparative Study of 1D Convolutional Neural Networks and Support Vector Machines
 
 **Authors:** Omri Shlezinger, Nadav Idelson
-**Course:** Data Analysis and Machine Learning on Biological Data
+**Course:** Data Analysis and Machine Learning on Biological Data by Dr. Oshrit Shtossel
 **Date:** February 2026
 
 ---
